@@ -45,10 +45,10 @@
     var max_geodes = 200;
     var nb_particles = 80;
     var probas = [
-        [gold, 500],
-        [stone, 30],
-        [coal, 30],
-        [clay, 20],
+        [gold, 0],
+        [stone, 0],
+        [coal, 0],
+        [clay, 0],
         [opale, 1]
     ];
     var probability = probas.map((v, i) => Array(v[1]).fill(i)).reduce((c, v) => c.concat(v), []);
