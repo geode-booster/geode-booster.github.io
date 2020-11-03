@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="description" content="LA GEODE FDP ! LA GEODE !!" />
+  <meta charset="utf-8">
+  <title>OUVRE FDP !</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+</div>
+
+<script>
+    var opale = new Image();
+    var geode = new Image();
+    var stone = new Image();
+    var clay = new Image();
+    var coal = new Image();
+    var gold = new Image();
+    opale.src = 'https://idlescape.com/images/mining/black_opal.png';
+    geode.src = 'https://idlescape.com/images/misc/geode.png';
+    stone.src = 'https://idlescape.com/images/mining/stone.png';
+    clay.src = 'https://idlescape.com/images/mining/clay.png';
+    coal.src = 'https://idlescape.com/images/mining/coal.png';
+    gold.src = 'https://idlescape.com/images/gold_coin.png';
+
+    
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    canvas.style.position = "absolute";
+    canvas.style.top = "0px";
+    canvas.style.left = "0px";
+    document.body.appendChild(canvas);
+    
+    function resize(){
+        w = canvas.width = innerWidth;
+        h = canvas.height = innerHeight;
+    }
+    
+    var nb_geodes = 0;
+    var proba_new = 400;
+    var max_geodes = 200;
+    var nb_particles = 100;
+    var probas = [
+        [gold, 500],
+        [stone, 30],
+        [coal, 30],
+        [clay, 20],
+        [opale, 1]
+    ];
+    var probability = probas.map((v, i) => Array(v[1]).fill(i)).reduce((c, v) => c.concat(v), []);
+    
+    resize();
+    window.addEventListener("resize",resize);
+    
+    canvas.addEventListener('click', function(event) {
+        pas = gl.length-1;
+        console.log("x:" + String(event.offsetX) + " y:" + String(event.offsetY));
+        while(pas >= 0 ) {
+            var spr = gl[pas];
+
+            if(event.offsetX > spr.xr-(geode.width/2*spr.scale) &&  event.offsetX < spr.xr+(geode.width/2*spr.scale) && event.offsetY > spr.yr-(geode.height/2*spr.scale) && event.offsetY < spr.yr+(geode.height/2*spr.scale)){
+                for (let pas2 = 0; pas2 < nb_particles; pas2++) {
+                    new_particle(event.offsetX+(geode.height/2*spr.scale), event.offsetY+(geode.height/2*spr.scale));
+                }
+                gl.splice(pas,1);
+                break;
+            }            
+            pas=pas-1;
+        }
+    });
+
+
+    function rand(min,max){
+        return Math.random() * (max ?(max-min) : min) + (max ? min : 0)
+    }
+    
+    var gl = [];
+    var pl = [];
+    
+    function new_geode(){
+        gl.push({
+        x : rand(w), y : rand(h),
+        xr : 0, yr : 0, 
+        r : rand(0,1),  // mélangeons les goudjas
+        scale : rand(0.5,1), // chanclons la bougnadère
+        dx : rand(-2,2), dy : rand(-2,2),
+        dr : rand(-0.2,0.2),
+        })
+    }
+    
+    function new_particle(offX, offY){
+        pl.push({
+        img : probas[probability[Math.floor((Math.random() * probability.length))]][0],
+        x : offX, y : offY,
+        xr : 0, yr : 0, 
+        r : rand(0,1),  // mélangeons les goudjas
+        scale : rand(0.2,0.4), // chanclons la bougnadère
+        dx : rand(-2,2), dy : rand(-2,2),
+        dr : rand(-0.2,0.2),
+        tick : Math.floor(rand(500, 1500))
+        })
+    }
+    
+    for (let pas = 0; pas < nb_geodes; pas++) {
+        new_geode();
+    }
+    
+    function drawImage(image, spr,i){
+        var gold_factor = 1;
+        if(image==gold){
+            gold_factor = 5
+        }
+        ctx.setTransform(spr.scale*gold_factor, 0, 0, spr.scale*gold_factor, spr.xr, spr.yr); // yatangaki par là
+        ctx.rotate(spr.r/10);
+        ctx.drawImage(image, -image.width / 2, -image.height / 2);
+    }
+
+    function update(){
+        var ihM,iwM;
+        ctx.setTransform(1,0,0,1,0,0);
+        ctx.clearRect(0,0,w,h);
+        ctx.fillStyle = 'rgba(0,0,0,1)';
+        ctx.fillRect(0,0,window.innerWidth,window.innerHeight);
+        if(geode.complete){
+            var iw = geode.width;
+            var ih = geode.height;
+            for(var i = 0; i < gl.length; i ++){
+                var spr = gl[i];
+                spr.x += spr.dx;
+                spr.y += spr.dy;
+                spr.r += spr.dr;
+                iwM = iw * spr.scale * 2 + w;
+                ihM = ih * spr.scale * 2 + h;
+                spr.xr = ((spr.x % iwM) + iwM) % iwM - iw * spr.scale;
+                spr.yr = ((spr.y % ihM) + ihM) % ihM - ih * spr.scale;
+                drawImage(geode,spr,i);
+            }
+
+            for(var i = 0; i < pl.length; i ++){
+                var spr = pl[i];
+                spr.x += spr.dx;
+                spr.y += spr.dy;
+                spr.r += spr.dr;
+                spr.tick -= 1;
+                iwM = iw * spr.scale * 2 + w;
+                ihM = ih * spr.scale * 2 + h;
+                spr.xr = ((spr.x % iwM) + iwM) % iwM - iw * spr.scale;
+                spr.yr = ((spr.y % ihM) + ihM) % ihM - ih * spr.scale;
+                drawImage(spr.img,spr,i);
+            }
+            pas = 0
+            while(pas < pl.length ) {
+                if(pl[pas].tick == 0){
+                    pl.splice(pas,1);
+                } else {
+                    pas += 1;
+                }
+            }
+        }
+        
+        if(Math.floor(Math.random()*proba_new)==Math.floor(proba_new/2) && gl.length <= max_geodes){
+            new_geode();
+        }
+        requestAnimationFrame(update);
+    }
+        
+    requestAnimationFrame(update);
+  </script>
+
+<script>
+</script>
+
+</body>
+</html>
+
