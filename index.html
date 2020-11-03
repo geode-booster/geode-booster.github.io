@@ -7,15 +7,12 @@
   <title>OUVRE FDP !</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="">
-  <link rel="stylesheet" href="css/style.css">
+  <!-- <link rel="stylesheet" href="css/style.css"> -->
+  <link href="css/style.css" rel="stylesheet" type="text/css">
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
-
-<div class="container">
-</div>
-
 <script>
     var opale = new Image();
     var geode = new Image();
@@ -46,7 +43,7 @@
     var nb_geodes = 5;
     var proba_new = 400;
     var max_geodes = 200;
-    var nb_particles = 100;
+    var nb_particles = 80;
     var probas = [
         [gold, 500],
         [stone, 30],
@@ -104,7 +101,7 @@
         scale : rand(0.2,0.4), // chanclons la bougnadère
         dx : rand(-2,2), dy : rand(-2,2),
         dr : rand(-0.2,0.2),
-        tick : Math.floor(rand(500, 1500))
+        tick : Math.floor(rand(400, 1000))
         })
     }
     
@@ -174,8 +171,7 @@
     requestAnimationFrame(update);
   </script>
 
-<script>
-</script>
+Test
 
 </body>
 </html>
