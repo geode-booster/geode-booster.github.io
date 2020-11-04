@@ -8,25 +8,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="">
   <!-- <link rel="stylesheet" href="css/style.css"> -->
-  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
 <script>
+
+    var pick_icon_folder = "https://raw.githubusercontent.com/geode-booster/geode-booster.github.io/master/";
+    var pickaxes = ["pick1", "pick2", "pick3", "pick4", "pick5"];
     var opale = new Image();
     var geode = new Image();
     var stone = new Image();
     var clay = new Image();
     var coal = new Image();
     var gold = new Image();
+    var diamond = new Image();
+    var ruby = new Image();
+    var sapphire = new Image();
+    var emerald = new Image();
+    
     opale.src = 'https://idlescape.com/images/mining/black_opal.png';
     geode.src = 'https://idlescape.com/images/misc/geode.png';
     stone.src = 'https://idlescape.com/images/mining/stone.png';
     clay.src = 'https://idlescape.com/images/mining/clay.png';
     coal.src = 'https://idlescape.com/images/mining/coal.png';
     gold.src = 'https://idlescape.com/images/gold_coin.png';
-
+    diamond.src = 'https://idlescape.com/images/mining/diamond.png';
+    ruby.src = 'https://idlescape.com/images/mining/ruby.png';
+    sapphire.src = 'https://idlescape.com/images/mining/sapphire.png';
+    emerald.src = 'https://idlescape.com/images/mining/emerald.png';
+    console.log("url(" + pick_icon_folder + "pick.png'), auto");
+    document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png'), auto";
     
     var canvas = document.createElement("canvas");
     var ctx = canvas.getContext("2d");
@@ -43,12 +56,16 @@
     var nb_geodes = 5;
     var proba_new = 400;
     var max_geodes = 200;
-    var nb_particles = 80;
+    var nb_particles = 100;
     var probas = [
-        [gold, 300],
-        [stone, 20],
+        [gold, 200],
+        [stone, 25],
         [coal, 20],
-        [clay, 20],
+        [clay, 15],
+        [emerald, 4],
+        [sapphire, 2],
+        [ruby, 2],
+        [diamond, 1],
         [opale, 1]
     ];
     var probability = probas.map((v, i) => Array(v[1]).fill(i)).reduce((c, v) => c.concat(v), []);
