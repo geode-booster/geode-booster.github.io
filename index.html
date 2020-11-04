@@ -39,7 +39,7 @@
     sapphire.src = 'https://idlescape.com/images/mining/sapphire.png';
     emerald.src = 'https://idlescape.com/images/mining/emerald.png';
     console.log("url(" + pick_icon_folder + "pick.png'), auto");
-    document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png'), auto";
+    document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png') 5 65, auto";
     
     var canvas = document.createElement("canvas");
     var ctx = canvas.getContext("2d");
@@ -55,10 +55,10 @@
     
     var nb_geodes = 5;
     var proba_new = 400;
-    var max_geodes = 200;
-    var nb_particles = 50;
+    var max_geodes = 100;
+    var nb_particles = 40;
     var probas = [
-        [gold, 2000],
+        [gold, 800],
         [stone, 40],
         [coal, 20],
         [clay, 15],
@@ -118,7 +118,7 @@
         scale : rand(0.2,0.4), // chanclons la bougnadère
         dx : rand(-2,2), dy : rand(-2,2),
         dr : rand(-0.2,0.2),
-        tick : Math.floor(rand(400, 1000))
+        tick : Math.floor(rand(200, 500))
         })
     }
     
