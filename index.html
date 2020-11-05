@@ -16,7 +16,7 @@
 <script>
 
     var pick_icon_folder = "https://raw.githubusercontent.com/geode-booster/geode-booster.github.io/master/";
-    var pickaxes = ["ddb", "pick1", "pick2", "pick3", "pick4", "pick5"];
+    var pickaxes = ["pick0", "pick1", "pick2", "pick3", "pick4", "pick5"];
     var opale = new Image();
     var geode = new Image();
     var stone = new Image();
@@ -29,8 +29,8 @@
     var emerald = new Image();
     
     opale.src = 'https://idlescape.com/images/mining/black_opal.png';
-    geode.src = 'https://image.noelshack.com/fichiers/2018/05/4/1517478200-hummerrougerisitas.png';
-    stone.src = 'https://image.noelshack.com/fichiers/2016/26/1467335935-jesus1.png';
+    geode.src = 'https://idlescape.com/images/misc/geode.png';
+    stone.src = 'https://idlescape.com/images/mining/stone.png';
     clay.src = 'https://idlescape.com/images/mining/clay.png';
     coal.src = 'https://idlescape.com/images/mining/coal.png';
     gold.src = 'https://idlescape.com/images/gold_coin.png';
@@ -39,8 +39,7 @@
     sapphire.src = 'https://idlescape.com/images/mining/sapphire.png';
     emerald.src = 'https://idlescape.com/images/mining/emerald.png';
     console.log("url(" + pick_icon_folder + "pick.png'), auto");
-    <!-- document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png') 5 65, auto"; -->
-    document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png') 5 5, auto";
+    document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png') 5 65, auto";
     
     var canvas = document.createElement("canvas");
     var ctx = canvas.getContext("2d");
@@ -57,17 +56,17 @@
     var nb_geodes = 5;
     var proba_new = 400;
     var max_geodes = 100;
-    var nb_particles = 5000;
+    var nb_particles = 40;
     var probas = [
-        [gold, 0],
+        [gold, 800],
         [stone, 40],
-        [coal, 0],
-        [clay, 0],
-        [emerald, 0],
-        [sapphire, 0],
-        [ruby, 0],
-        [diamond, 0],
-        [opale, 0]
+        [coal, 20],
+        [clay, 15],
+        [emerald, 4],
+        [sapphire, 2],
+        [ruby, 2],
+        [diamond, 1],
+        [opale, 1]
     ];
     var probability = probas.map((v, i) => Array(v[1]).fill(i)).reduce((c, v) => c.concat(v), []);
     
