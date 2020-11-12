@@ -58,17 +58,17 @@
     var max_geodes = 100;
     var nb_particles = 40;
     var probas = [
-        [gold, 800],
-        [stone, 40],
-        [coal, 20],
-        [clay, 15],
-        [emerald, 4],
-        [sapphire, 2],
-        [ruby, 2],
-        [diamond, 1],
-        [opale, 1]
+        [gold, "0"],
+        [stone, "0"],
+        [coal, "0"],
+        [clay, "0"],
+        [emerald, "1"],
+        [sapphire, "1"],
+        [ruby, "1"],
+        [diamond, "1"],
+        [opale, "1"]
     ];
-    var probability = probas.map((v, i) => Array(v[1]).fill(i)).reduce((c, v) => c.concat(v), []);
+    var probability = probas.map((v, i) => Array(parseInt(v[1])).fill(i)).reduce((c, v) => c.concat(v), []);
     
     resize();
     window.addEventListener("resize",resize);
@@ -126,7 +126,7 @@
         new_geode();
     }
     
-    function drawImage(image, spr,i){
+    function drawImage(image, spr, i){
         var gold_factor = 1;
         if(image==gold){
             gold_factor = 5
