@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-  <meta name="description" content="MORJEU" />
+  <meta name="description" content="GEODE OPENER" />
   <meta charset="utf-8">
-  <title>MORJEU</title>
+  <title>GEODE OPENER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="author" content="">
   <!-- <link rel="stylesheet" href="css/style.css"> -->
-  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <!-- <link href="css/style.css" rel="stylesheet" type="text/css"> -->
   <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
@@ -38,7 +38,7 @@
     ruby.src = 'https://idlescape.com/images/mining/ruby.png';
     sapphire.src = 'https://idlescape.com/images/mining/sapphire.png';
     emerald.src = 'https://idlescape.com/images/mining/emerald.png';
-    <!-- console.log("url(" + pick_icon_folder + "pick.png'), auto"); -->
+    console.log("url(" + pick_icon_folder + "pick.png'), auto");
     document.getElementsByTagName("body")[0].style.cursor = "url('" + pick_icon_folder + pickaxes[0] + ".png') 5 65, auto";
     
     var canvas = document.createElement("canvas");
@@ -53,19 +53,19 @@
         h = canvas.height = innerHeight;
     }
     
-    var nb_geodes = 8;
-    var proba_new = 1000;
-    var max_geodes = 10;
-    var nb_particles = 1;
+    var nb_geodes = 5;
+    var proba_new = 400;
+    var max_geodes = 100;
+    var nb_particles = 40;
     var probas = [
-        [gold, "10000"],
-        [stone, "1500"],
-        [coal, "900"],
-        [clay, "600"],
-        [emerald, "50"],
-        [sapphire, "30"],
-        [ruby, "12"],
-        [diamond, "5"],
+        [gold, "0"],
+        [stone, "0"],
+        [coal, "0"],
+        [clay, "0"],
+        [emerald, "1"],
+        [sapphire, "1"],
+        [ruby, "1"],
+        [diamond, "1"],
         [opale, "1"]
     ];
     var probability = probas.map((v, i) => Array(parseInt(v[1])).fill(i)).reduce((c, v) => c.concat(v), []);
@@ -110,19 +110,15 @@
     }
     
     function new_particle(offX, offY){
-		var particle_id = probability[Math.floor((Math.random() * probability.length))];
-		console.log(particle_id);
-		var part_div = document.getElementById("resource" + particle_id);
-		part_div.textContent = parseInt(part_div.textContent) + 1;
         pl.push({
-			img : probas[particle_id][0],
-			x : offX, y : offY,
-			xr : 0, yr : 0, 
-			r : rand(0,1),  // mélangeons les goudjas
-			scale : rand(0.2,0.4), // chanclons la bougnadère
-			dx : rand(-2,2), dy : rand(-2,2),
-			dr : rand(-0.2,0.2),
-			tick : Math.floor(rand(200, 500))
+        img : probas[probability[Math.floor((Math.random() * probability.length))]][0],
+        x : offX, y : offY,
+        xr : 0, yr : 0, 
+        r : rand(0,1),  // mélangeons les goudjas
+        scale : rand(0.2,0.4), // chanclons la bougnadère
+        dx : rand(-2,2), dy : rand(-2,2),
+        dr : rand(-0.2,0.2),
+        tick : Math.floor(rand(200, 500))
         })
     }
     
@@ -192,46 +188,7 @@
     requestAnimationFrame(update);
   </script>
 
-<div class="UI"> 
-	<div class="resource_list">
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/gold_coin.png"></img>
-			<span id="resource0">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/stone.png"></img>
-			<span id="resource1">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/coal.png"></img>
-			<span id="resource2">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/clay.png"></img>
-			<span id="resource3">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/sapphire.png"></img>
-			<span id="resource4">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/emerald.png"></img>
-			<span id="resource5">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/ruby.png"></img>
-			<span id="resource6">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/diamond.png"></img>
-			<span id="resource7">0</id>
-		</div>
-		<div class="resource">
-			<img class="resource_img" src="https://idlescape.com/images/mining/black_opal.png"></img>
-			<span id="resource8">0</id>
-		</div>
-	</div>
-</div>
+Test
 
 </body>
 </html>

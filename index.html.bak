@@ -197,6 +197,7 @@
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/gold_coin.png"></img>
 			<span id="resource0">0</id>
+			<div class="hide">I am shown when someone hovers over the div above.</div>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/stone.png"></img>
