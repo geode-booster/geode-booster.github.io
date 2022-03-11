@@ -11,6 +11,7 @@
 .resource{
 	background-color: grey;
 	border: 1px solid #999;
+	font-size: 25px;
 }
 .resource_img{
 	width: 30px;
