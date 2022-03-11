@@ -13,8 +13,8 @@
 </head>
 
 <body>
-<script>
 
+<script>
     var pick_icon_folder = "https://raw.githubusercontent.com/geode-booster/geode-booster.github.io/master/";
     var pickaxes = ["pick0", "pick1", "pick2", "pick3", "pick4", "pick5"];
     var opale = new Image();
@@ -53,23 +53,29 @@
         h = canvas.height = innerHeight;
     }
     
-    var nb_geodes = 8;
-    var proba_new = 1000;
-    var max_geodes = 10;
+    var nb_geodes = 0;
+    var proba_new = 800;
+    var max_geodes = 5;
     var nb_particles = 1;
     var probas = [
         [gold, "10000"],
         [stone, "1500"],
         [coal, "900"],
         [clay, "600"],
-        [emerald, "50"],
-        [sapphire, "30"],
+        [sapphire, "50"],
+        [emerald, "30"],
         [ruby, "12"],
         [diamond, "5"],
         [opale, "1"]
     ];
+	var stock = [0,0,0,0,0,0,0,0,0];
     var probability = probas.map((v, i) => Array(parseInt(v[1])).fill(i)).reduce((c, v) => c.concat(v), []);
     
+	var upgrade_cost = [
+		[5, 0, 1.20, "up_loot_cost"], // loot per geode upgrade (nb_particles)
+		[10, 1, 1.08, "up_spawn_rate"], // geode spawn rate (proba_new)
+	];
+	
     resize();
     window.addEventListener("resize",resize);
     
@@ -111,9 +117,7 @@
     
     function new_particle(offX, offY){
 		var particle_id = probability[Math.floor((Math.random() * probability.length))];
-		console.log(particle_id);
-		var part_div = document.getElementById("resource" + particle_id);
-		part_div.textContent = parseInt(part_div.textContent) + 1;
+		stock[particle_id] += 1;
         pl.push({
 			img : probas[particle_id][0],
 			x : offX, y : offY,
@@ -125,7 +129,57 @@
 			tick : Math.floor(rand(200, 500))
         })
     }
+	
+	function upgrade(choice) {
+		choice = parseInt(choice);
+		switch (choice) {
+		case 0:
+			console.log('Trying to upgrade loot per geode');
+			if(stock[upgrade_cost[choice][1]] >= upgrade_cost[choice][0]){
+				nb_particles += 1;
+				upgrade_purchase_successful(choice);
+			} else {
+				console.log("Not enough money");
+			}
+			break;
+		case 1:
+			console.log('Trying to upgrade geode spawn rate');
+			if(stock[upgrade_cost[choice][1]] >= upgrade_cost[choice][0]){
+				proba_new /= Math.max(proba_new * 0.92, 100);
+				upgrade_purchase_successful(choice);
+			} else {
+				console.log("Not enough money");
+			}
+			break;
+		default:
+			console.log("Unable to understand upgrade command");
+		}
+	}
+	
+	function upgrade_purchase_successful(choice) {
+		upgrade_cost[choice][0] = Math.ceil(upgrade_cost[choice][2] * upgrade_cost[choice][0]);
+		stock[upgrade_cost[choice][1]] -= upgrade_cost[choice][0];
+	}
+	
+	function update_UI(){
+		try{
+			for(let pas = 0; pas < stock.length; pas++){
+				var res_div = document.getElementById("resource" + pas.toString());
+				res_div.textContent = stock[pas];
+			}
+			for(let pas = 0; pas < upgrade_cost.length; pas++){
+				document.getElementById(upgrade_cost[pas][3]).textContent = upgrade_cost[pas][0];
+				var divbut = document.getElementById("upgrade" + pas.toString());
+				if(stock[upgrade_cost[pas][1]] >= upgrade_cost[pas][0]) {
+					divbut.className = "upgrade_button available";
+				} else {
+					divbut.className = "upgrade_button blocked"
+				}
+			}
+		} catch(e) { console.log(e) }
+	}
     
+	// Initialize game with nb_geodes
     for (let pas = 0; pas < nb_geodes; pas++) {
         new_geode();
     }
@@ -186,51 +240,56 @@
         if(Math.floor(Math.random()*proba_new)==Math.floor(proba_new/2) && gl.length <= max_geodes){
             new_geode();
         }
+		update_UI();  
         requestAnimationFrame(update);
     }
-        
     requestAnimationFrame(update);
-  </script>
+</script>
 
-<div class="UI"> 
+<div class="resource_UI"> 
 	<div class="resource_list">
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/gold_coin.png"></img>
-			<span id="resource0">0</id>
+			<span id="resource0">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/stone.png"></img>
-			<span id="resource1">0</id>
+			<span id="resource1">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/coal.png"></img>
-			<span id="resource2">0</id>
+			<span id="resource2">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/clay.png"></img>
-			<span id="resource3">0</id>
+			<span id="resource3">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/sapphire.png"></img>
-			<span id="resource4">0</id>
+			<span id="resource4">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/emerald.png"></img>
-			<span id="resource5">0</id>
+			<span id="resource5">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/ruby.png"></img>
-			<span id="resource6">0</id>
+			<span id="resource6">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/diamond.png"></img>
-			<span id="resource7">0</id>
+			<span id="resource7">0</span>
 		</div>
 		<div class="resource">
 			<img class="resource_img" src="https://idlescape.com/images/mining/black_opal.png"></img>
-			<span id="resource8">0</id>
+			<span id="resource8">0</span>
 		</div>
 	</div>
+</div>
+
+<div class="upgrade_UI">
+	<button id="upgrade0" class="upgrade_button blocked" type="button" onclick=upgrade("0")>Upgrade loot per geode: Cost <span id="up_loot_cost">0</span><img class="resource_img" src="https://idlescape.com/images/gold_coin.png"></img></button>
+	<button id="upgrade1" class="upgrade_button blocked" type="button" onclick=upgrade("1")>Upgrade geode spawn rate: Cost <span id="up_spawn_rate">0</span><img class="resource_img" src="https://idlescape.com/images/mining/stone.png"></img></button>
 </div>
 
 </body>
